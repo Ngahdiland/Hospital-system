@@ -1,5 +1,5 @@
 // Example protected page using the patient layout
-import PatientLayout from './patient-layout';
+import PatientLayout from '../../../components/patient-layout';
 import Image from 'next/image';
 
 export default function Dashboard() {

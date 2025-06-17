@@ -1,5 +1,5 @@
 // Example profile page for patient users
-import PatientLayout from './patient-layout';
+import PatientLayout from '../../../components/patient-layout';
 
 export default function Profile() {
   return (
@@ -9,3 +9,4 @@ export default function Profile() {
     </PatientLayout>
   );
 }
+a

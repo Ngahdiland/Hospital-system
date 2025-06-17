@@ -1,5 +1,5 @@
 import Image from "next/image";
-import PatientLayout from "./patient-layout";
+import PatientLayout from "../components/patient-layout";
 
 export default function Home() {
   return (

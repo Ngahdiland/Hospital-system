@@ -1,5 +1,5 @@
 // Example settings page for patient users
-import PatientLayout from './patient-layout';
+import PatientLayout from '../../../components/patient-layout';
 
 export default function Settings() {
   return (

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import db from "./db.json";
+import db from "../../../db/db.json";
 
 const wallet = db.wallets[0];
 const transactions = [

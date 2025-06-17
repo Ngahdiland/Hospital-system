@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import db from "./db.json";
+import db from "../../../db/db.json";
 
 // Simulate chat messages per appointment (in-memory for demo)
 const initialMessages: Record<number, { sender: "patient" | "doctor"; text: string; time: string }[]> = {

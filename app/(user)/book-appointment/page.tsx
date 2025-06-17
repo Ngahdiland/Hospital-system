@@ -1,7 +1,8 @@
+"use client";
 import { useState } from "react";
-import db from "./db.json";
-import DoctorList from "./DoctorList";
-import BookForm from "./BookForm";
+import db from "../../../db/db.json";
+import DoctorList from "../../../components/DoctorList";
+import BookForm from "../../../components/BookForm";
 
 const specializations = Array.from(new Set(db.doctors.map((d) => d.specialty)));
 
