@@ -35,13 +35,13 @@ export default function PatientLayout({ children }: { children: React.ReactNode 
         >
           <nav className="flex flex-col gap-4 items-center md:items-start">
             <Link href="/" className="hover:text-blue-700" title="Dashboard">🏠 <span className="hidden md:inline">Dashboard</span></Link>
-            <Link href="/profile" className="hover:text-blue-700" title="Profile">👤 <span className="hidden md:inline">Profile</span></Link>
             <Link href="/appointments" className="hover:text-blue-700" title="Appointments">📅 <span className="hidden md:inline">Appointments</span></Link>
-            <Link href="/settings" className="hover:text-blue-700" title="Settings">⚙️ <span className="hidden md:inline">Settings</span></Link>
-            <Link href="/book-appointment" className="hover:text-blue-700" title="Book Appointment">➕ <span className="hidden md:inline">Book</span></Link>
-            <Link href="/wallet" className="hover:text-blue-700" title="Wallet">💳 <span className="hidden md:inline">Wallet</span></Link>
-            <Link href="/prescriptions" className="hover:text-blue-700" title="Prescriptions">💊 <span className="hidden md:inline">Prescriptions</span></Link>
             <Link href="/chat" className="hover:text-blue-700" title="Live Chat">💬 <span className="hidden md:inline">Chat</span></Link>
+            <Link href="/book-appointment" className="hover:text-blue-700" title="Book Appointment">➕ <span className="hidden md:inline">Book</span></Link>
+            <Link href="/prescriptions" className="hover:text-blue-700" title="Prescriptions">💊 <span className="hidden md:inline">Prescriptions</span></Link>
+            <Link href="/profile" className="hover:text-blue-700" title="Profile">👤 <span className="hidden md:inline">Profile</span></Link>
+            <Link href="/wallet" className="hover:text-blue-700" title="Wallet">💳 <span className="hidden md:inline">Wallet</span></Link>
+            <Link href="/settings" className="hover:text-blue-700" title="Settings">⚙️ <span className="hidden md:inline">Settings</span></Link>
           </nav>
         </aside>
         {/* Overlay for mobile sidebar */}
