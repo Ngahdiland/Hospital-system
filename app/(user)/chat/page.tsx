@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import db from "../../../db/db.json";
 import PatientLayout from "@/components/patient-layout";
+import { systemMessageGroups } from '../../../db/systemMessages';
 
 // Simulate chat messages per appointment (in-memory for demo)
 const initialMessages: Record<
@@ -43,6 +44,28 @@ export default function Chat() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, appointmentId]);
 
+  function getSystemReply(userText: string): string | null {
+    const text = userText.toLowerCase();
+    let bestMatch = null;
+    let maxMatches = 0;
+    for (const group of systemMessageGroups) {
+      let matches = 0;
+      for (const keyword of group.keywords) {
+        if (text.includes(keyword)) matches++;
+      }
+      if (matches > maxMatches) {
+        maxMatches = matches;
+        bestMatch = group;
+      }
+    }
+    if (bestMatch && maxMatches > 0) {
+      // Pick a random reply from the best matching group
+      const replies = bestMatch.replies;
+      return replies[Math.floor(Math.random() * replies.length)];
+    }
+    return null;
+  }
+
   function sendMessage() {
     if (!input.trim()) return;
     setMessages((prev) => ({
@@ -59,16 +82,17 @@ export default function Chat() {
         },
       ],
     }));
+    const userInput = input;
     setInput("");
-    // Simulate doctor reply after 1s
     setTimeout(() => {
+      const reply = getSystemReply(userInput) || "Sorry, I didn't understand. Can you rephrase or ask for support?";
       setMessages((prev) => ({
         ...prev,
         [appointmentId]: [
           ...(prev[appointmentId] || []),
           {
             sender: "doctor",
-            text: "Thank you for your message.",
+            text: reply,
             time: new Date().toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
