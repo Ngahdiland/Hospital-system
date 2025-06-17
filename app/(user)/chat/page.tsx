@@ -81,68 +81,70 @@ export default function Chat() {
 
   return (
     <PatientLayout>
-      <div className="max-w-2xl mx-auto py-8 px-4 font-[THICCCBOI]">
-        <h1 className="text-2xl font-bold mb-6 text-[#011204]">Live Chat</h1>
-        <div className="mb-4">
-          <label className="font-medium text-[#011204] mr-2">
-            Select Appointment:
-          </label>
-          <select
-            className="border rounded px-2 py-1"
-            value={appointmentId}
-            onChange={(e) => setAppointmentId(Number(e.target.value))}
-          >
-            {appointmentOptions.map((opt) => (
-              <option key={opt.id} value={opt.id}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="bg-white border border-[#E8F6FE] rounded shadow p-4 h-96 overflow-y-auto flex flex-col gap-2 mb-4">
-          {(messages[appointmentId] || []).map((msg, idx) => (
-            <div
-              key={idx}
-              className={`flex ${
-                msg.sender === "patient" ? "justify-end" : "justify-start"
-              }`}
+      <div className="w-full h-full flex flex-col justify-start">
+        <div className="max-w-2xl mx-auto py-8 px-4 font-[THICCCBOI]">
+          <h1 className="text-2xl font-bold mb-6 text-[#011204]">Live Chat</h1>
+          <div className="mb-4">
+            <label className="font-medium text-[#011204] mr-2">
+              Select Appointment:
+            </label>
+            <select
+              className="border rounded px-2 py-1"
+              value={appointmentId}
+              onChange={(e) => setAppointmentId(Number(e.target.value))}
             >
+              {appointmentOptions.map((opt) => (
+                <option key={opt.id} value={opt.id}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="bg-white border border-[#E8F6FE] rounded shadow p-4 h-96 overflow-y-auto flex flex-col gap-2 mb-4">
+            {(messages[appointmentId] || []).map((msg, idx) => (
               <div
-                className={`max-w-xs px-4 py-2 rounded-lg shadow text-sm flex flex-col ${
-                  msg.sender === "patient"
-                    ? "bg-[#03C7FC] text-white rounded-br-none"
-                    : "bg-[#E8F6FE] text-[#011204] rounded-bl-none"
+                key={idx}
+                className={`flex ${
+                  msg.sender === "patient" ? "justify-end" : "justify-start"
                 }`}
               >
-                <span>{msg.text}</span>
-                <span className="text-xs text-right mt-1 opacity-60">
-                  {msg.time}
-                </span>
+                <div
+                  className={`max-w-xs px-4 py-2 rounded-lg shadow text-sm flex flex-col ${
+                    msg.sender === "patient"
+                      ? "bg-[#03C7FC] text-white rounded-br-none"
+                      : "bg-[#E8F6FE] text-[#011204] rounded-bl-none"
+                  }`}
+                >
+                  <span>{msg.text}</span>
+                  <span className="text-xs text-right mt-1 opacity-60">
+                    {msg.time}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
-          <div ref={chatEndRef} />
-        </div>
-        <form
-          className="flex gap-2"
-          onSubmit={(e) => {
-            e.preventDefault();
-            sendMessage();
-          }}
-        >
-          <input
-            className="flex-1 border rounded px-3 py-2"
-            placeholder="Type your message..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
-          <button
-            type="submit"
-            className="bg-[#03C7FC] hover:bg-[#2379F8] text-white font-bold px-6 py-2 rounded-full shadow transition-colors"
+            ))}
+            <div ref={chatEndRef} />
+          </div>
+          <form
+            className="flex gap-2"
+            onSubmit={(e) => {
+              e.preventDefault();
+              sendMessage();
+            }}
           >
-            Send
-          </button>
-        </form>
+            <input
+              className="flex-1 border rounded px-3 py-2"
+              placeholder="Type your message..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="bg-[#03C7FC] hover:bg-[#2379F8] text-white font-bold px-6 py-2 rounded-full shadow transition-colors"
+            >
+              Send
+            </button>
+          </form>
+        </div>
       </div>
     </PatientLayout>
   );

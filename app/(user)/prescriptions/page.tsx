@@ -7,7 +7,7 @@ const doctors = db.doctors;
 export default function Prescriptions() {
   return (
     <PatientLayout>
-      <div className="max-w-3xl mx-auto py-8 px-4 font-[THICCCBOI]">
+      <div className="w-full h-full flex flex-col justify-start">
         <h1 className="text-2xl font-bold mb-6 text-[#011204]">
           Prescriptions
         </h1>

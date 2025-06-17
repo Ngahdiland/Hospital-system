@@ -32,7 +32,7 @@ export default function Wallet() {
 
   return (
     <PatientLayout>
-      <div className="max-w-2xl mx-auto py-8 px-4 font-[THICCCBOI]">
+      <div className="w-full h-full flex flex-col justify-start">
         <h1 className="text-2xl font-bold mb-6 text-[#011204]">Wallet</h1>
         <div className="bg-white border border-[#E8F6FE] rounded shadow p-6 mb-8 flex flex-col items-center">
           <span className="text-lg text-[#2379F8] mb-2">Current Balance</span>

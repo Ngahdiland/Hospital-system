@@ -2,9 +2,22 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import { FaHome, FaCalendarAlt, FaComments, FaPlus, FaPrescriptionBottleAlt, FaUser, FaWallet, FaCog } from 'react-icons/fa';
+import { usePathname } from 'next/navigation';
 
 export default function PatientLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const pathname = usePathname();
+  const navLinks = [
+    { href: '/', label: 'Dashboard', icon: <FaHome /> },
+    { href: '/appointments', label: 'Appointments', icon: <FaCalendarAlt /> },
+    { href: '/chat', label: 'Chat', icon: <FaComments /> },
+    { href: '/book-appointment', label: 'Book', icon: <FaPlus /> },
+    { href: '/prescriptions', label: 'Prescriptions', icon: <FaPrescriptionBottleAlt /> },
+    { href: '/profile', label: 'Profile', icon: <FaUser /> },
+    { href: '/wallet', label: 'Wallet', icon: <FaWallet /> },
+    { href: '/settings', label: 'Settings', icon: <FaCog /> },
+  ];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -34,14 +47,23 @@ export default function PatientLayout({ children }: { children: React.ReactNode 
           className={`bg-gray-100 h-full top-0 left-0 transition-transform duration-200 z-20 md:static fixed md:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:block w-1/6 min-w-[120px] max-w-xs p-4`}
         >
           <nav className="flex flex-col gap-4 items-center md:items-start">
-            <Link href="/" className="hover:text-blue-700" title="Dashboard">🏠 <span className="hidden md:inline">Dashboard</span></Link>
-            <Link href="/appointments" className="hover:text-blue-700" title="Appointments">📅 <span className="hidden md:inline">Appointments</span></Link>
-            <Link href="/chat" className="hover:text-blue-700" title="Live Chat">💬 <span className="hidden md:inline">Chat</span></Link>
-            <Link href="/book-appointment" className="hover:text-blue-700" title="Book Appointment">➕ <span className="hidden md:inline">Book</span></Link>
-            <Link href="/prescriptions" className="hover:text-blue-700" title="Prescriptions">💊 <span className="hidden md:inline">Prescriptions</span></Link>
-            <Link href="/profile" className="hover:text-blue-700" title="Profile">👤 <span className="hidden md:inline">Profile</span></Link>
-            <Link href="/wallet" className="hover:text-blue-700" title="Wallet">💳 <span className="hidden md:inline">Wallet</span></Link>
-            <Link href="/settings" className="hover:text-blue-700" title="Settings">⚙️ <span className="hidden md:inline">Settings</span></Link>
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg shadow-sm transition-all font-medium text-base
+                    ${isActive ? 'bg-blue-700 text-white' : 'bg-white text-[#011204] hover:bg-blue-100 hover:text-blue-700'}
+                  `}
+                  style={{ boxShadow: '0 1px 4px 0 rgba(0,0,0,0.04)' }}
+                  title={link.label}
+                >
+                  <span className="text-xl">{link.icon}</span>
+                  <span className="hidden md:inline">{link.label}</span>
+                </Link>
+              );
+            })}
           </nav>
         </aside>
         {/* Overlay for mobile sidebar */}
@@ -52,7 +74,9 @@ export default function PatientLayout({ children }: { children: React.ReactNode 
           />
         )}
         {/* Main Content */}
-        <main className="flex-1 w-5/6 p-4 md:p-8 bg-white min-h-screen transition-all duration-200">{children}</main>
+        <main className="flex-1 p-4 md:p-8 bg-white min-h-screen transition-all duration-200">
+          {children}
+        </main>
       </div>
     </div>
   );
