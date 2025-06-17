@@ -1,5 +1,6 @@
+'use client';
 import { useState } from "react";
-import db from "../db.json";
+import db from "../../../db/db.json";
 
 const allDoctors = db.doctors;
 const allAppointments = db.appointments;

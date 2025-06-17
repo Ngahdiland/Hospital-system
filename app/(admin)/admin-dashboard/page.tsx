@@ -1,4 +1,5 @@
-import db from "../db.json";
+"use client";
+import db from "../../../db/db.json";
 import { useState } from "react";
 
 const months = [

@@ -1,5 +1,6 @@
+"use client";
 import { useState } from "react";
-import db from "../db.json";
+import db from "../../../db/db.json";
 
 const allTickets = [
   { id: 1, user_id: 1, subject: "Payment Issue", description: "My payment did not go through.", status: "open", assigned_admin_id: null },
