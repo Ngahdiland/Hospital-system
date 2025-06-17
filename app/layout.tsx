@@ -27,6 +27,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* Use PatientLayout for all pages except login/register */}
+        {/* This is a simple example, for real routing use a layout route or check pathname */}
         {children}
       </body>
     </html>

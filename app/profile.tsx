@@ -1,0 +1,11 @@
+// Example profile page for patient users
+import PatientLayout from './patient-layout';
+
+export default function Profile() {
+  return (
+    <PatientLayout>
+      <h1 className="text-2xl font-bold mb-4">Profile</h1>
+      <p>View and update your patient profile information here.</p>
+    </PatientLayout>
+  );
+}

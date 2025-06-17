@@ -1,0 +1,63 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "patient@example.com",
+      "role": "patient",
+      "gender": "male",
+      "dob": "1990-01-01",
+      "contact_info": "123-456-7890"
+    }
+  ],
+  "doctors": [
+    {
+      "id": 1,
+      "user_id": 2,
+      "specialty": "Cardiology",
+      "bio": "Experienced cardiologist.",
+      "image_url": "/doctor1.jpg",
+      "schedule_json": "{}"
+    },
+    {
+      "id": 2,
+      "user_id": 3,
+      "specialty": "Dermatology",
+      "bio": "Expert in skin care.",
+      "image_url": "/doctor2.jpg",
+      "schedule_json": "{}"
+    },
+    {
+      "id": 3,
+      "user_id": 4,
+      "specialty": "Pediatrics",
+      "bio": "Caring for children.",
+      "image_url": "/doctor3.jpg",
+      "schedule_json": "{}"
+    }
+  ],
+  "appointments": [
+    {
+      "id": 1,
+      "patient_id": 1,
+      "doctor_id": 1,
+      "date": "2025-06-20",
+      "time": "10:00",
+      "status": "upcoming",
+      "notes": "Annual checkup"
+    }
+  ],
+  "prescriptions": [
+    {
+      "id": 1,
+      "appointment_id": 1,
+      "doctor_id": 1,
+      "patient_id": 1,
+      "content": "Take 1 tablet daily.",
+      "file_url": ""
+    }
+  ],
+  "wallets": [
+    { "id": 1, "user_id": 1, "balance": 120.0 }
+  ]
+}
