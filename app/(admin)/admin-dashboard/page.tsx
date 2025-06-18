@@ -1,5 +1,4 @@
 "use client";
-import db from "../../../db/db.json";
 import { useState } from "react";
 
 const months = [
@@ -17,9 +16,28 @@ const activities = [
 
 export default function AdminDashboard() {
   // KPIs
-  const totalPatients = db.users.filter(u => u.role === "patient").length;
-  const totalDoctors = db.doctors.length;
-  const totalIncome = 1200; // Example static value
+  const [patients, setPatients] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+  const [totalIncome, setTotalIncome] = useState(0);
+
+  // Fetch data from API (replace with your API endpoints)
+  useEffect(() => {
+    const fetchData = async () => {
+      const patientsRes = await fetch('/api/patients');
+      const patientsData = await patientsRes.json();
+      setPatients(patientsData);
+
+      const doctorsRes = await fetch('/api/doctors');
+      const doctorsData = await doctorsRes.json();
+      setDoctors(doctorsData);
+
+      // Calculate total income from patients data (assuming income is a field in patient data)
+      const income = patientsData.reduce((acc, patient) => acc + patient.income, 0);
+      setTotalIncome(income);
+    };
+
+    fetchData();
+  }, []);
 
   // Chart state (could be dynamic)
   const [selectedYear] = useState(2025);
@@ -31,11 +49,11 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <div className="bg-white border border-[#E8F6FE] shadow rounded p-6 flex flex-col items-center">
           <span className="text-lg text-[#2379F8] mb-1">Total Patients</span>
-          <span className="text-3xl font-bold text-[#03C7FC]">{totalPatients}</span>
+          <span className="text-3xl font-bold text-[#03C7FC]">{patients.length}</span>
         </div>
         <div className="bg-white border border-[#E8F6FE] shadow rounded p-6 flex flex-col items-center">
           <span className="text-lg text-[#2379F8] mb-1">Total Doctors</span>
-          <span className="text-3xl font-bold text-[#03C7FC]">{totalDoctors}</span>
+          <span className="text-3xl font-bold text-[#03C7FC]">{doctors.length}</span>
         </div>
         <div className="bg-white border border-[#E8F6FE] shadow rounded p-6 flex flex-col items-center">
           <span className="text-lg text-[#2379F8] mb-1">Total Income</span>

@@ -1,22 +1,30 @@
 "use client";
-import { useState } from "react";
-import db from "../../../db/db.json";
+import { useEffect, useState } from "react";
 import DoctorList from "../../../components/DoctorList";
 import BookForm from "../../../components/BookForm";
 import PatientLayout from "@/components/patient-layout";
 
-const specializations = Array.from(new Set(db.doctors.map((d) => d.specialty)));
-
-type Doctor = (typeof db)["doctors"][number];
-
 export default function BookAppointment() {
   const [filter, setFilter] = useState("");
-  const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
+  const [doctors, setDoctors] = useState<any[]>([]);
+  const [specializations, setSpecializations] = useState<string[]>([]);
+  const [selectedDoctor, setSelectedDoctor] = useState<any | null>(null);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [success, setSuccess] = useState("");
 
-  const doctors = db.doctors.filter((d) =>
+  useEffect(() => {
+    fetch("/api/doctors")
+      .then((r) => r.json())
+      .then((data) => {
+        setDoctors(data);
+        setSpecializations(
+          Array.from(new Set(data.map((d: any) => d.specialty)))
+        );
+      });
+  }, []);
+
+  const filteredDoctors = doctors.filter((d) =>
     filter ? d.specialty === filter : true
   );
 
@@ -55,7 +63,7 @@ export default function BookAppointment() {
           </select>
         </div>
         <DoctorList
-          doctors={doctors}
+          doctors={filteredDoctors}
           selectedDoctor={selectedDoctor}
           onSelect={setSelectedDoctor}
         />

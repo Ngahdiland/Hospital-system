@@ -1,8 +1,29 @@
 "use client";
 import { useState } from "react";
-import db from "../../../db/db.json";
 
-const initialDoctors = db.doctors;
+const initialDoctors = [
+  {
+    id: 1,
+    bio: "Experienced cardiologist",
+    specialty: "Cardiology",
+    image_url: "https://via.placeholder.com/150",
+    schedule_json: "{}",
+  },
+  {
+    id: 2,
+    bio: "Pediatrician with 10 years of experience",
+    specialty: "Pediatrics",
+    image_url: "https://via.placeholder.com/150",
+    schedule_json: "{}",
+  },
+  {
+    id: 3,
+    bio: "Orthopedic surgeon",
+    specialty: "Orthopedics",
+    image_url: "https://via.placeholder.com/150",
+    schedule_json: "{}",
+  },
+];
 const allSpecializations = [
   ...new Set(initialDoctors.map((d) => d.specialty)),
 ];

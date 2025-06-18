@@ -1,10 +1,30 @@
+"use client";
 import PatientLayout from "@/components/patient-layout";
-import db from "../../../db/db.json";
-
-const prescriptions = db.prescriptions;
-const doctors = db.doctors;
+import { useEffect, useState } from "react";
 
 export default function Prescriptions() {
+  const [prescriptions, setPrescriptions] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+
+  useEffect(() => {
+    // Fetch prescriptions and doctors data from the API
+    const fetchData = async () => {
+      try {
+        const prescriptionsResponse = await fetch("/api/prescriptions");
+        const doctorsResponse = await fetch("/api/doctors");
+        const prescriptionsData = await prescriptionsResponse.json();
+        const doctorsData = await doctorsResponse.json();
+
+        setPrescriptions(prescriptionsData);
+        setDoctors(doctorsData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <PatientLayout>
       <div className="w-full h-full flex flex-col justify-start">

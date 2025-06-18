@@ -1,10 +1,5 @@
 'use client';
 import { useState } from "react";
-import db from "../../../db/db.json";
-
-const allDoctors = db.doctors;
-const allAppointments = db.appointments;
-const allUsers = db.users;
 
 export default function AdminAppointments() {
   const [doctorFilter, setDoctorFilter] = useState("");
@@ -13,6 +8,8 @@ export default function AdminAppointments() {
   const [prescriptionText, setPrescriptionText] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [success, setSuccess] = useState("");
+
+  // Removed direct import of db.json. Use API fetch instead.
 
   const filteredAppointments = allAppointments.filter((a) => {
     const doctor = allDoctors.find((d) => d.id === a.doctor_id);

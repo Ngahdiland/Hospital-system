@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import db from "../../../db/db.json";
 
 const allTickets = [
   { id: 1, user_id: 1, subject: "Payment Issue", description: "My payment did not go through.", status: "open", assigned_admin_id: null },
@@ -11,7 +10,12 @@ const allAdmins = [
   { id: 2, name: "Admin Jane" },
   { id: 3, name: "Admin Bob" },
 ];
-const allUsers = db.users;
+// Removed direct import of db.json. Use API fetch instead.
+const allUsers = [
+  { id: 1, name: "John Doe" },
+  { id: 2, name: "Jane Smith" },
+  { id: 3, name: "Alice Johnson" },
+];
 
 export default function AdminSupport() {
   const [tickets, setTickets] = useState(allTickets);

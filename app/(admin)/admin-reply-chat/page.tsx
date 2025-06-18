@@ -30,8 +30,26 @@ export default function AdminReplyChat() {
     return () => clearInterval(interval);
   }, []);
 
+  // Calculate number of unreplied user messages for each user
   const users = Array.from(new Set(messages.map((m) => m.user)));
   const userMessages = selectedUser ? messages.filter(m => m.user === selectedUser) : [];
+  const userUnrepliedCounts: Record<string, number> = {};
+  users.forEach((u) => {
+    const userMsgs = messages.filter((m) => m.user === u);
+    let count = 0;
+    let lastFrom: "user" | "admin" | null = null;
+    for (let i = 0; i < userMsgs.length; i++) {
+      if (userMsgs[i].from === "user") {
+        if (lastFrom !== "user") count = 0;
+        count++;
+        lastFrom = "user";
+      } else if (userMsgs[i].from === "admin") {
+        count = 0;
+        lastFrom = "admin";
+      }
+    }
+    userUnrepliedCounts[u] = count;
+  });
 
   async function sendReply() {
     if (!reply.trim() || !selectedUser) return;
@@ -60,12 +78,17 @@ export default function AdminReplyChat() {
         <h2 className="font-bold mb-4">User Chats</h2>
         <ul>
           {users.map((u) => (
-            <li key={u}>
+            <li key={u} className="flex items-center justify-between">
               <button
                 className={`w-full text-left px-3 py-2 rounded mb-2 ${selectedUser === u ? 'bg-blue-600 text-white' : 'hover:bg-blue-100'}`}
                 onClick={() => setSelectedUser(u)}
               >
-                {u}
+                <span>{u}</span>
+                {userUnrepliedCounts[u] > 0 && (
+                  <span className="ml-2 inline-block bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                    {userUnrepliedCounts[u]}
+                  </span>
+                )}
               </button>
             </li>
           ))}
@@ -73,7 +96,7 @@ export default function AdminReplyChat() {
       </div>
       <div className="flex-1 flex flex-col p-4">
         <h2 className="font-bold mb-4">Chat with {selectedUser || '...'}</h2>
-        <div className="flex-1 overflow-y-auto bg-white border rounded p-4 mb-4">
+        <div className="flex-1 overflow-y-auto bg-white border rounded p-4 mb-4 h-96 max-h-96">
           {userMessages.length === 0 ? (
             <div className="text-gray-400">No messages</div>
           ) : (

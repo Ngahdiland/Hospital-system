@@ -1,20 +1,7 @@
 "use client";
 import { useState } from "react";
-import db from "../../../db/db.json";
+// Removed direct import of db.json. Use API fetch instead.
 import PatientLayout from "@/components/patient-layout";
-
-const wallet = db.wallets[0];
-const transactions = [
-  {
-    id: 1,
-    date: "2025-06-10",
-    type: "credit",
-    amount: 50,
-    status: "Completed",
-  },
-  { id: 2, date: "2025-06-12", type: "debit", amount: 30, status: "Completed" },
-  { id: 3, date: "2025-06-15", type: "credit", amount: 100, status: "Pending" },
-];
 
 export default function Wallet() {
   const [amount, setAmount] = useState("");
