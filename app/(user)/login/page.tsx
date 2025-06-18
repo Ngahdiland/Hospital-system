@@ -32,6 +32,7 @@ export default function Login() {
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md w-full max-w-sm">
         <h2 className="text-2xl font-bold mb-6">Patient Login</h2>
         {error && <div className="text-red-500 mb-4">{error}</div>}
+        <label className="block font-semibold text-gray-700 mb-1">Email</label>
         <input
           type="email"
           placeholder="Email"
@@ -40,6 +41,7 @@ export default function Login() {
           className="w-full mb-4 p-2 border rounded"
           required
         />
+        <label className="block font-semibold text-gray-700 mb-1">Password</label>
         <input
           type="password"
           placeholder="Password"
