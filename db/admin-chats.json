@@ -1,0 +1,37 @@
+[
+  {
+    "id": "1",
+    "user": "john stive",
+    "message": "Hello, I need help with my appointment.",
+    "from": "user",
+    "time": "09:00"
+  },
+  {
+    "id": "2",
+    "user": "john stive",
+    "message": "Sure, what do you need assistance with?",
+    "from": "admin",
+    "time": "09:01"
+  },
+  {
+    "id": "3",
+    "user": "john stive",
+    "message": "I want to reschedule my appointment to next week.",
+    "from": "user",
+    "time": "09:02"
+  },
+  {
+    "id": "vzfyzql25ao",
+    "user": "john stive",
+    "message": "hey",
+    "from": "user",
+    "time": "08:22 PM"
+  },
+  {
+    "id": "vrt30ag4ij",
+    "user": "john stive",
+    "message": "can i get more info on a prescribtion?",
+    "from": "user",
+    "time": "08:24 PM"
+  }
+]

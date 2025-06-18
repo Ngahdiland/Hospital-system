@@ -1,106 +1,57 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import db from "../../../db/db.json";
 import PatientLayout from "@/components/patient-layout";
-import { systemMessageGroups } from '../../../db/systemMessages';
 
-// Simulate chat messages per appointment (in-memory for demo)
-const initialMessages: Record<
-  number,
-  { sender: "patient" | "doctor"; text: string; time: string }[]
-> = {
-  1: [
-    {
-      sender: "doctor",
-      text: "Hello, how are you feeling today?",
-      time: "09:00",
-    },
-    {
-      sender: "patient",
-      text: "I'm feeling better, thank you!",
-      time: "09:01",
-    },
-  ],
-};
+interface ChatMessage {
+  id: string;
+  user: string;
+  message: string;
+  from: "user" | "admin";
+  time: string;
+}
+
+const CURRENT_USER = "john stive"; // Replace with dynamic user if available
 
 export default function Chat() {
-  const [appointmentId, setAppointmentId] = useState(
-    db.appointments[0]?.id || 1
-  );
-  const [messages, setMessages] = useState(initialMessages);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(true);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  const appointmentOptions = db.appointments.map((a) => {
-    const doctor = db.doctors.find((d) => d.id === a.doctor_id);
-    return {
-      id: a.id,
-      label: `${a.date} with ${doctor ? doctor.bio : "Doctor"}`,
-    };
-  });
+  useEffect(() => {
+    async function fetchMessages() {
+      setLoading(true);
+      const res = await fetch("/api/chat");
+      const data = await res.json();
+      setMessages(data.filter((msg: ChatMessage) => msg.user === CURRENT_USER));
+      setLoading(false);
+    }
+    fetchMessages();
+  }, []);
 
-  // Scroll to bottom on new message
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, appointmentId]);
+  }, [messages]);
 
-  function getSystemReply(userText: string): string | null {
-    const text = userText.toLowerCase();
-    let bestMatch = null;
-    let maxMatches = 0;
-    for (const group of systemMessageGroups) {
-      let matches = 0;
-      for (const keyword of group.keywords) {
-        if (text.includes(keyword)) matches++;
-      }
-      if (matches > maxMatches) {
-        maxMatches = matches;
-        bestMatch = group;
-      }
-    }
-    if (bestMatch && maxMatches > 0) {
-      // Pick a random reply from the best matching group
-      const replies = bestMatch.replies;
-      return replies[Math.floor(Math.random() * replies.length)];
-    }
-    return null;
-  }
-
-  function sendMessage() {
+  async function sendMessage() {
     if (!input.trim()) return;
-    setMessages((prev) => ({
-      ...prev,
-      [appointmentId]: [
-        ...(prev[appointmentId] || []),
-        {
-          sender: "patient",
-          text: input,
-          time: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        },
-      ],
-    }));
-    const userInput = input;
+    const newMsg: ChatMessage = {
+      id: Math.random().toString(36).slice(2),
+      user: CURRENT_USER,
+      message: input,
+      from: "user",
+      time: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+    setMessages((prev) => [...prev, newMsg]);
     setInput("");
-    setTimeout(() => {
-      const reply = getSystemReply(userInput) || "Sorry, I didn't understand. Can you rephrase or ask for support?";
-      setMessages((prev) => ({
-        ...prev,
-        [appointmentId]: [
-          ...(prev[appointmentId] || []),
-          {
-            sender: "doctor",
-            text: reply,
-            time: new Date().toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            }),
-          },
-        ],
-      }));
-    }, 1000);
+    await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newMsg),
+    });
   }
 
   return (
@@ -108,44 +59,32 @@ export default function Chat() {
       <div className="w-full h-full flex flex-col justify-start">
         <div className="max-w-2xl mx-auto py-8 px-4 font-[THICCCBOI]">
           <h1 className="text-2xl font-bold mb-6 text-[#011204]">Live Chat</h1>
-          <div className="mb-4">
-            <label className="font-medium text-[#011204] mr-2">
-              Select Appointment:
-            </label>
-            <select
-              className="border rounded px-2 py-1"
-              value={appointmentId}
-              onChange={(e) => setAppointmentId(Number(e.target.value))}
-            >
-              {appointmentOptions.map((opt) => (
-                <option key={opt.id} value={opt.id}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-          </div>
           <div className="bg-white border border-[#E8F6FE] rounded shadow p-4 h-96 overflow-y-auto flex flex-col gap-2 mb-4">
-            {(messages[appointmentId] || []).map((msg, idx) => (
-              <div
-                key={idx}
-                className={`flex ${
-                  msg.sender === "patient" ? "justify-end" : "justify-start"
-                }`}
-              >
+            {loading ? (
+              <div className="text-gray-400">Loading...</div>
+            ) : (
+              messages.map((msg, idx) => (
                 <div
-                  className={`max-w-xs px-4 py-2 rounded-lg shadow text-sm flex flex-col ${
-                    msg.sender === "patient"
-                      ? "bg-[#03C7FC] text-white rounded-br-none"
-                      : "bg-[#E8F6FE] text-[#011204] rounded-bl-none"
+                  key={msg.id + idx}
+                  className={`flex ${
+                    msg.from === "user" ? "justify-end" : "justify-start"
                   }`}
                 >
-                  <span>{msg.text}</span>
-                  <span className="text-xs text-right mt-1 opacity-60">
-                    {msg.time}
-                  </span>
+                  <div
+                    className={`max-w-xs px-4 py-2 rounded-lg shadow text-sm flex flex-col ${
+                      msg.from === "user"
+                        ? "bg-[#03C7FC] text-white rounded-br-none"
+                        : "bg-[#E8F6FE] text-[#011204] rounded-bl-none"
+                    }`}
+                  >
+                    <span>{msg.message}</span>
+                    <span className="text-xs text-right mt-1 opacity-60">
+                      {msg.time}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
             <div ref={chatEndRef} />
           </div>
           <form

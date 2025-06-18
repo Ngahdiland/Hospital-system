@@ -11,6 +11,7 @@ const navLinks = [
   { href: '/admin-appointments', label: 'Appointments', icon: <FaCalendarAlt /> },
   { href: '/admin-doctors', label: 'Doctors', icon: <FaUserMd /> },
   { href: '/admin-support', label: 'Support', icon: <FaHeadset /> },
+  { href: '/admin-reply-chat', label: 'Reply Chat', icon: <FaHeadset /> },
 ];
 
 const AdminSidebar: React.FC = () => {
