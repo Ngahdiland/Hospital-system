@@ -1,34 +1,43 @@
+"use client";
 import React from 'react';
+import { FaTachometerAlt, FaCalendarAlt, FaUserMd, FaHeadset } from 'react-icons/fa';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const sidebarWidth = 220;
 
-const AdminSidebar: React.FC = () => (
-  <aside
-    style={{
-      position: 'fixed',
-      top: 60, // height of header
-      left: 0,
-      width: sidebarWidth,
-      height: 'calc(100vh - 60px)',
-      background: '#2d3748',
-      color: '#fff',
-      padding: '2rem 1rem',
-      zIndex: 999,
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '1.5rem',
-      boxShadow: '2px 0 8px rgba(0,0,0,0.05)'
-    }}
-  >
-    <nav>
-      <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-        <li><a href="/admin/admin-dashboard" style={{ color: '#fff', textDecoration: 'none' }}>Dashboard</a></li>
-        <li><a href="/admin/admin-appointments" style={{ color: '#fff', textDecoration: 'none' }}>Appointments</a></li>
-        <li><a href="/admin/admin-doctors" style={{ color: '#fff', textDecoration: 'none' }}>Doctors</a></li>
-        <li><a href="/admin/admin-support" style={{ color: '#fff', textDecoration: 'none' }}>Support</a></li>
-      </ul>
-    </nav>
-  </aside>
-);
+const navLinks = [
+  { href: '/admin-dashboard', label: 'Dashboard', icon: <FaTachometerAlt /> },
+  { href: '/admin-appointments', label: 'Appointments', icon: <FaCalendarAlt /> },
+  { href: '/admin-doctors', label: 'Doctors', icon: <FaUserMd /> },
+  { href: '/admin-support', label: 'Support', icon: <FaHeadset /> },
+];
+
+const AdminSidebar: React.FC = () => {
+  const pathname = usePathname();
+  return (
+    <aside
+      className="bg-gray-800 text-white fixed top-[60px] left-0 h-screen w-[220px] z-30 shadow-lg p-4 flex flex-col gap-4"
+    >
+      <nav className="flex flex-col gap-4">
+        {navLinks.map((link) => {
+          const isActive = pathname === link.href;
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-medium text-base
+                ${isActive ? 'bg-blue-700 text-white' : 'bg-gray-900 text-white hover:bg-blue-600 hover:text-white'}
+              `}
+            >
+              <span className="text-xl">{link.icon}</span>
+              <span>{link.label}</span>
+            </Link>
+          );
+        })}
+      </nav>
+    </aside>
+  );
+};
 
 export default AdminSidebar;

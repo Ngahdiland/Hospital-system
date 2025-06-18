@@ -8,25 +8,23 @@ export default function AdminLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
-            <body style={{ margin: 0 }}>
-                <AdminHeader />
-                <div style={{ display: "flex" }}>
-                    <AdminSidebar />
-                    <main
-                        style={{
-                            marginTop: 60, // header height
-                            marginLeft: 220, // sidebar width
-                            padding: "2rem",
-                            flex: 1,
-                            minHeight: "calc(100vh - 60px)",
-                            background: "#f7fafc",
-                        }}
-                    >
-                        {children}
-                    </main>
-                </div>
-            </body>
-        </html>
+        <>
+            <AdminHeader />
+            <div style={{ display: "flex" }}>
+                <AdminSidebar />
+                <main
+                    style={{
+                        marginTop: 60, // header height
+                        marginLeft: 220, // sidebar width
+                        padding: "2rem",
+                        flex: 1,
+                        minHeight: "calc(100vh - 60px)",
+                        background: "#f7fafc",
+                    }}
+                >
+                    {children}
+                </main>
+            </div>
+        </>
     );
 }
