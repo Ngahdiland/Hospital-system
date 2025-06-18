@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import PatientLayout from "@/components/patient-layout";
 import toast, { Toaster } from "react-hot-toast";
-import chatData from "@/db/admin-chats.json";
 
 interface ChatMessage {
   id: string;
@@ -13,15 +12,22 @@ interface ChatMessage {
 }
 
 export default function AdminReplyChat() {
-  const [messages, setMessages] = useState<ChatMessage[]>(chatData as ChatMessage[]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [reply, setReply] = useState("");
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // No fetch, use local JSON for demo
-    setMessages(chatData as ChatMessage[]);
-    setLoading(false);
+    async function fetchMessages() {
+      setLoading(true);
+      const res = await fetch("/api/chat");
+      const data = await res.json();
+      setMessages(data);
+      setLoading(false);
+    }
+    fetchMessages();
+    const interval = setInterval(fetchMessages, 2000);
+    return () => clearInterval(interval);
   }, []);
 
   const users = Array.from(new Set(messages.map((m) => m.user)));
@@ -38,8 +44,8 @@ export default function AdminReplyChat() {
     };
     setMessages(prev => [...prev, newMsg]);
     setReply("");
-    // Optionally send to API
-    await fetch("/api/admin-chats", {
+    // Save to shared chat API so user can see admin reply
+    await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newMsg)
