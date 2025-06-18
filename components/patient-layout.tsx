@@ -22,7 +22,7 @@ export default function PatientLayout({ children }: { children: React.ReactNode 
   return (
     <div className="min-h-screen flex flex-col">
       {/* Top Navbar */}
-      <nav className="bg-blue-700 text-white flex items-center justify-between px-4 py-3">
+      <nav className="bg-blue-700 z-40 fixed top-0 left-0 w-full  text-white flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2">
           <button
             className="md:hidden mr-2"
@@ -44,7 +44,7 @@ export default function PatientLayout({ children }: { children: React.ReactNode 
       <div className="flex flex-1">
         {/* Sidebar */}
         <aside
-          className={`bg-gray-100 h-full top-0 left-0 transition-transform duration-200 z-20 md:static fixed md:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:block w-1/6 min-w-[120px] max-w-xs p-4`}
+          className={`bg-gray-100 h-screen mt-[53px] left-0 transition-transform duration-200 z-20 md:static fixed md:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:block w-1/6 min-w-[120px] max-w-xs p-4`}
         >
           <nav className="flex flex-col gap-4 items-center md:items-start">
             {navLinks.map((link) => {
@@ -74,7 +74,7 @@ export default function PatientLayout({ children }: { children: React.ReactNode 
           />
         )}
         {/* Main Content */}
-        <main className="flex-1 p-4 md:p-8 bg-white min-h-screen transition-all duration-200">
+        <main className="flex-1 p-4 md:p-8 mt-[55px] bg-white min-h-screen transition-all duration-200">
           {children}
         </main>
       </div>
