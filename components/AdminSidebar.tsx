@@ -9,9 +9,9 @@ const sidebarWidth = 220;
 const navLinks = [
   { href: '/admin-dashboard', label: 'Dashboard', icon: <FaTachometerAlt /> },
   { href: '/admin-appointments', label: 'Appointments', icon: <FaCalendarAlt /> },
+  { href: '/admin-reply-chat', label: 'Reply Chat', icon: <FaHeadset /> },
   { href: '/admin-doctors', label: 'Doctors', icon: <FaUserMd /> },
   { href: '/admin-support', label: 'Support', icon: <FaHeadset /> },
-  { href: '/admin-reply-chat', label: 'Reply Chat', icon: <FaHeadset /> },
 ];
 
 const AdminSidebar: React.FC = () => {

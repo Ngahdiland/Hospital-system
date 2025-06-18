@@ -1,5 +1,5 @@
 'use client';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function AdminAppointments() {
   const [doctorFilter, setDoctorFilter] = useState("");
@@ -8,8 +8,26 @@ export default function AdminAppointments() {
   const [prescriptionText, setPrescriptionText] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [success, setSuccess] = useState("");
+  const [allAppointments, setAllAppointments] = useState<any[]>([]);
+  const [allDoctors, setAllDoctors] = useState<any[]>([]);
+  const [allUsers, setAllUsers] = useState<any[]>([]);
 
-  // Removed direct import of db.json. Use API fetch instead.
+  useEffect(() => {
+    async function fetchData() {
+      const [aRes, dRes, uRes] = await Promise.all([
+        fetch("/api/appointments"),
+        fetch("/api/doctors"),
+        fetch("/api/profile") // Assuming this returns all users, adjust if needed
+      ]);
+      const [aData, dData, uData] = await Promise.all([
+        aRes.json(), dRes.json(), uRes.json()
+      ]);
+      setAllAppointments(aData);
+      setAllDoctors(dData);
+      setAllUsers([uData]); // If /api/profile returns a single user, wrap in array
+    }
+    fetchData();
+  }, []);
 
   const filteredAppointments = allAppointments.filter((a) => {
     const doctor = allDoctors.find((d) => d.id === a.doctor_id);
