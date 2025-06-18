@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // Removed direct import of db.json. Use API fetch instead.
 import PatientLayout from "@/components/patient-layout";
 
@@ -7,6 +7,17 @@ export default function Wallet() {
   const [amount, setAmount] = useState("");
   const [card, setCard] = useState("");
   const [success, setSuccess] = useState("");
+  const [wallet, setWallet] = useState<{ balance: number } | null>(null);
+  const [transactions, setTransactions] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("/api/wallet")
+      .then((r) => r.json())
+      .then((data) => {
+        setWallet(data);
+        setTransactions(data.transactions || []);
+      });
+  }, []);
 
   function handleAddFunds(e: React.FormEvent) {
     e.preventDefault();
@@ -24,7 +35,7 @@ export default function Wallet() {
         <div className="bg-white border border-[#E8F6FE] rounded shadow p-6 mb-8 flex flex-col items-center">
           <span className="text-lg text-[#2379F8] mb-2">Current Balance</span>
           <span className="text-3xl font-bold text-[#03C7FC] mb-2">
-            ${wallet.balance.toFixed(2)}
+            {wallet ? `$${wallet.balance.toFixed(2)}` : "Loading..."}
           </span>
         </div>
         <form
